@@ -1,0 +1,12 @@
+{
+  "resourceName": "xapoclientfiles",
+  "policyUUID": "171955f4",
+  "bucketName": "xapo-s3-client-uploads",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

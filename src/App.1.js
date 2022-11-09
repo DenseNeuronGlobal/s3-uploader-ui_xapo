@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 import '@aws-amplify/ui-react/styles.css';
 import './App.css';
 import AppLayout from "@awsui/components-react/app-layout";
@@ -6,66 +7,19 @@ import FormField from "@awsui/components-react/form-field";
 import Alert from "@awsui/components-react/alert";
 import Container from "@awsui/components-react/container";
 import Header from "@awsui/components-react/header";
+import SideNavigation from '@awsui/components-react/side-navigation';
 import Button from "@awsui/components-react/button";
 import TokenGroup from "@awsui/components-react/token-group";
 import TopNavigation from "@awsui/components-react/top-navigation"
 import SpaceBetween from "@awsui/components-react/space-between";
 import ProgressBar from "@awsui/components-react/progress-bar";
 import Amplify, {Auth, Storage, Hub} from 'aws-amplify';
-import {Authenticator, Flex, Grid, Image, useTheme, View, Heading} from '@aws-amplify/ui-react';
+import {Authenticator, Flex, Grid, Image, useTheme, View} from '@aws-amplify/ui-react';
+
 
 import awsconfig from './aws-exports';
 
 Amplify.configure(awsconfig);
-
-const components = {
-  Header() {
-    const { tokens } = useTheme();
-
-    return (
-      <View textAlign="center" padding={tokens.space.large}>
-        <Image
-          alt="Xapo Logo"
-          src="https://assets-global.website-files.com/63209aa05bd6ad6734b0da3d/6321ca7a2930be7b3d91991c_footer-logo-img.svg"
-        />
-        <Image 
-            alt="Xapo Full Logo"
-            src='https://assets-global.website-files.com/63209aa05bd6ad6734b0da3d/6321caad6f73797603d576fa_logo-colored.svg' 
-        />
-      </View>
-    );
-  },
-  
-
-  
-  SignIn: {
-      Header() {
-          const { tokens } = useTheme();
-          return (
-                <Heading
-                  padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-                  level={3}
-                >
-                  Sign in to your account
-                </Heading>
-            );
-      }
-  },
-  ResetPassword: {
-      Header() {
-          const { tokens } = useTheme();
-          return (
-                <Heading
-                  padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-                  level={3}
-                >
-                  Reset your password
-                </Heading>
-            );
-      }
-  }
-}
-
 
 const appLayoutLabels = {
     navigation: 'Side navigation',
@@ -82,6 +36,31 @@ const XapoTheme = {
   a: { color: '#FFC0CB' },
 };
 
+
+const ServiceNavigation = () => {
+    const location = useLocation();
+    let navigate = useNavigate();
+
+    function onFollowHandler(event) {
+        if (!event.detail.external) {
+            event.preventDefault();
+            navigate(event.detail.href);
+        }
+    }
+
+    return (
+        <SideNavigation
+            activeHref={location.pathname}
+            header={{href: "/", text: "Menu"}}
+            onFollow={onFollowHandler}
+            items={[
+                {type: "link", text: "Upload", href: "/"},
+                {type: "divider"}
+            ]}
+        />
+    );
+}
+
 function formatBytes(a, b = 2, k = 1024) {
     let d = Math.floor(Math.log(a) / Math.log(k));
     return 0 === a ? "0 Bytes" : parseFloat((a / Math.pow(k, d)).toFixed(Math.max(0, b))) + " " + ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][d];
@@ -94,12 +73,6 @@ const Content = () => {
     const [fileList, setFileList] = useState([]);
     const [historyList, setHistoryList] = useState([]);
     const [historyCount, setHistoryCount] = useState(0);
-    
-    const uploadButton = {
-        backgroundColor: "red",
-        color: "white"
-    }
-    
     const handleClick = () => {
         hiddenFileInput.current.value = ""; // This avoids errors when selecting the same files multiple times
         hiddenFileInput.current.click();
@@ -157,26 +130,10 @@ const Content = () => {
                 uploadCompleted.push(Storage.put(fileList[id].name, fileList[id], {
                         progressCallback: progressBar[i],
                         level: "protected"
-                    }).then(async (result) => {
-                        console.log(`Completed the upload of ${result.key}`, fileList[id], result);
-
-                        // Get the current user identityId
-                        const userInfo = await Auth.currentUserInfo();
-                        const user = await Auth.currentAuthenticatedUser();
-                        console.log(user, userInfo);
-                        
-                        // Set user identityId attribute
-                        const attribute = 'custom:identityId';
-                        
-                        if (!userInfo.attributes[attribute]) {
-                            console.log('storing identityId as attribute in user info');
-                            await Auth.updateUserAttributes(user, {
-                                [attribute]: userInfo.id
-                            });
-                            console.log('Saved identityId attribute in user\'s attributes');
-                        }
+                    }).then(result => {
                         // Trying to remove items from the upload list as they complete. Maybe not work correctly
                         // setUploadList(uploadList.filter(item => item.label !== result.key));
+                        console.log(`Completed the upload of ${result.key}`);
                     })
                 );
             }
@@ -199,21 +156,29 @@ const Content = () => {
         document.title = "Xapo Bank File Upload";
     }, []);
     
-    let [user, setUser] = useState(null)
-    
     useEffect(() => {
-        let updateUser = async authState => {
-          try {
-            let user = await Auth.currentAuthenticatedUser()
-            setUser(user)
-          } catch {
-            setUser(null)
-          }
+        var link = document.querySelector("link[rel~='icon']");
+        if (!link) {
+            link = document.createElement('link');
+            link.rel = 'icon';
+            document.getElementsByTagName('head')[0].appendChild(link);
         }
-        
-        Hub.listen('auth', updateUser) // listen for login/signup events
-        updateUser() // check manually the first time because we won't get a Hub event
-        return () => Hub.remove('auth', updateUser) // cleanup
+        link.href = 'https://assets-global.website-files.com/63209aa05bd6ad6734b0da3d/6321e5ff304e3a7807b08c8f_fav.png';
+    }, []);
+    
+    let [user, setUser] = useState(null)
+    useEffect(() => {
+    let updateUser = async authState => {
+      try {
+        let user = await Auth.currentAuthenticatedUser()
+        setUser(user)
+      } catch {
+        setUser(null)
+      }
+    }
+    Hub.listen('auth', updateUser) // listen for login/signup events
+    updateUser() // check manually the first time because we won't get a Hub event
+    return () => Hub.remove('auth', updateUser) // cleanup
     }, []);
     
     const List = ({list}) => (
@@ -231,7 +196,6 @@ const Content = () => {
             ))}
         </>
     );
-
     return (
         <SpaceBetween size="l">
             <Container
@@ -265,7 +229,6 @@ const Content = () => {
                             <Button onClick={handleClick}
                                     iconAlign="left"
                                     iconName="upload"
-                                    className="amplify-button--secondary"
                             >
                                 Choose file[s]
                             </Button>
@@ -276,13 +239,9 @@ const Content = () => {
                                 style={{display: 'none'}}
                                 multiple
                             />
-                            <Button
-                                variant="primary"
-                                onClick={handleUpload}
-                                className="amplify-button--primary"
-                            >Upload</Button>
+                            <Button variant="primary" className=".form-button" onClick={handleUpload}>Upload</Button>
                         </SpaceBetween>
-                        
+
                         <TokenGroup
                             onDismiss={({detail: {itemIndex}}) => {
                                 handleDismiss(itemIndex)
@@ -315,26 +274,18 @@ function App() {
     const formFields = {
         signIn: {
             username: {
-                labelHidden: true,
+                labelHidden: false,
                 placeholder: 'Enter your email',
                 isRequired: true,
                 label: 'Email:'
             },
             password: {
-                labelHidden: true,
+                labelHidden: false,
                 placeholder: 'Enter your password',
                 isRequired: true,
                 label: 'Password:'
             },
         },
-        resetPassword: {
-            username: {
-                labelHidden: true,
-                placeholder: 'Enter your email',
-                isRequired: true,
-                label: 'Email:'
-            }
-        }
     }
 
     const navbarItemClick = e => {
@@ -347,11 +298,13 @@ function App() {
     }
 
     return (
-        <Authenticator
-            formFields={formFields}
-            components={components}
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}
-        >
+        <body bgcolor="#000000">
+        <center> 
+            <img class='xapoLogo' src='https://assets-global.website-files.com/63209aa05bd6ad6734b0da3d/6321ca7a2930be7b3d91991c_footer-logo-img.svg' />
+            <img class='xapoTextLogo' src='https://assets-global.website-files.com/63209aa05bd6ad6734b0da3d/6321caad6f73797603d576fa_logo-colored.svg' />
+        </center>
+
+        <Authenticator formFields={formFields} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
             {({signOut, user}) => (
                 <> 
                     <div id="navbar" style={{fontSize: 'body-l !important', position: 'sticky', top: 0, zIndex: 1002 }}s>
@@ -365,19 +318,14 @@ function App() {
                                 }
                             }}
                             utilities={[
-                                
                                 {
                                     type: "menu-dropdown",
                                     text: user.username,
                                     description: user.username,
                                     iconName: "user-profile",
                                     onItemClick: navbarItemClick,
-                                    
                                     items: [
-                                        {
-                                            id: "signout", 
-                                            text: "Sign out"
-                                        }
+                                        {id: "signout", text: "Sign out"}
                                     ]
                                 }
                             ]}
@@ -389,17 +337,17 @@ function App() {
                         />
                     </div>
                     <AppLayout
-                        toolsHide
-                        navigationHide
                         content={<Content/>}
                         headerSelector='#navbar'
+                        navigation={<ServiceNavigation/>}
+                        navigationOpen={navigationOpen}
                         onNavigationChange={({detail}) => setNavigationOpen(detail.open)}
                         ariaLabels={appLayoutLabels}
                     />
                 </>
             )}
         </Authenticator>
-
+        </body>
     );
 }
 

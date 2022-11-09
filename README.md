@@ -1,19 +1,6 @@
-# Simple S3 Web Application to upload multiple files
-[![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+# S3 Uploader UI for Xapo
 
-## About
-This repository contains the Open Source Software to demonstrate how to build a simple WebApp to users upload files to S3.  
-
-### Built With
-
-- [AWS Amplify Framework](https://docs.amplify.aws/)
-- [Amazon S3](https://aws.amazon.com/s3/)
-- [Amazon Cognito](https://aws.amazon.com/cognito/)
-- [AWS UI](https://github.com/aws/awsui-documentation)
-- [Node.JS](https://nodejs.org/en/)
-- [React](https://reactjs.org/)
-
-## Getting Started
+## How to install project
 
 First install AWS Amplify CLI
 `npm install -g @aws-amplify/cli`
@@ -61,17 +48,9 @@ display: none;
 > After this change you need to re-run `amplify publish`
 
 
-### Prerequisites
+## Prerequisites
 
 To build this solution you must have:
 - AWS account
 - Permissions to create resources in the AWS account
 - Node.js 16.x or higher
-
-## Security
-
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
-
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
