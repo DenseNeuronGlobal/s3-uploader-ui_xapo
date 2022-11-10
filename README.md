@@ -47,11 +47,9 @@ amplify add storage
 ```
 
 >Select the following parameters:
-For Select from one of the below mentioned services, select Content (Images, audio, video, etc.). Press enter to confirm.
+Select Content: (Images, audio, video, etc.)
 Provide a friendly name for your resource that will be used to label this category in the project - for example: xapos3uploadproduction (it can be any name; if you wish, accept the defaults). Press enter.
 Provide bucket name. This is the bucket where users will upload files. For example: xapos3uploadproduction. The name must be unique; otherwise, accept the defaults suggested and select enter to confirm. Make a note of this bucket; you use it later.
-
-Select: Content (Images, audio, video, etc.) 
 Select the option: create/update from the list of actions
 Who should have access: Select Auth users only
 What kind of access do you want for Authenticated users: create/update 
