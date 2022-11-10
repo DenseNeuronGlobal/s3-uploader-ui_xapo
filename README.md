@@ -62,11 +62,11 @@ Add the application hosting
 amplify hosting add
 ```
 
-> Select Amazon CloudFront and S3. Define a new unique bucket name or use the suggested one.
+Select the environment setup: Amazon CloudFront and S3. Define a new unique bucket name or use the suggested one.
 
 Now, you can build the web app (front-end)
 
-```bash
+```sh
 npm install
 amplify push
 amplify publish
