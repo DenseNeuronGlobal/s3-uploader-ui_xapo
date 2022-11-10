@@ -3,8 +3,17 @@
 ## Clone project
 `git clone https://github.com/DenseNeuronGlobal/s3-uploader-ui_xapo.git`
 
+## Prerequisites
+- Create a new Cloud9 server
+- Follow up the url to setup and install dependencies
+  https://aws.amazon.com/blogs/storage/allowing-external-users-to-securely-and-directly-upload-files-to-amazon-s3/
+
+## Create a New app under AWS Amplify
+https://prnt.sc/cWHVCoUmO6wn
+On the top right corner,  create a new app and selecte backend
+
 ## Install dependencies
-``
+`npm install`
 
 ## Setup Amplify Environment
 `amplify init`
@@ -45,3 +54,12 @@ We can choose AWS profile or AWS access keys
 We prefer to go with `AWS profile`.
 
 If we go with the option of 
+
+## Add hosting of Amplify to App
+`amplify hosting add`
+
+## Add auth of Amplify to App
+`amplify auth add`
+
+## Publish
+`amplify publish`
