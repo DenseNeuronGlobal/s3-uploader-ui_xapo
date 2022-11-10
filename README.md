@@ -72,7 +72,8 @@ amplify publish
 
 The output of the `amplify publish` if all the deployment was done correctly is a URL
 This URL is the web application URl where you can open from the browser to access your application.
-By default, the front-end come with the sign-up UI disabled. To enable the sign-up UI you need to change the file: `App.css`
+
+Go to AWS Cognito and create your users. You can then test the application in Chrome.
 
 
 ## Prerequisites
