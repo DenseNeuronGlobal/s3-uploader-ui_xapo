@@ -2,6 +2,16 @@
 
 ## How to install project
 
+```sh
+cat <<END > ~/.aws/config
+[default]
+region=us-east-1
+END
+```
+
+git clone
+
+
 First install AWS Amplify CLI
 `npm install -g @aws-amplify/cli`
 
