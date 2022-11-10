@@ -76,15 +76,6 @@ The output of the `amplify publish` if all the deployment was done correctly is 
 This URL is the web application URl where you can open from the browser to access your application.
 By default, the front-end come with the sign-up UI disabled. To enable the sign-up UI you need to change the file: `App.css`
 
-Comment or remove the following block:
-
-```css
-.amplify-tabs {
-display: none;
-}
-```
-> After this change you need to re-run `amplify publish`
-
 
 ## Prerequisites
 
