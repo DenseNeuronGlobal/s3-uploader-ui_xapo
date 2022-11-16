@@ -368,8 +368,8 @@ function App() {
                                 
                                 {
                                     type: "menu-dropdown",
-                                    text: user.username,
-                                    description: user.username,
+                                    text: user.attributes.email,
+                                    description: user.attributes.email,
                                     iconName: "user-profile",
                                     onItemClick: navbarItemClick,
                                     
