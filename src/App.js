@@ -158,12 +158,9 @@ const Content = () => {
                         progressCallback: progressBar[i],
                         level: "protected"
                     }).then(async (result) => {
-                        console.log(`Completed the upload of ${result.key}`, fileList[id], result);
-
                         // Get the current user identityId
                         const userInfo = await Auth.currentUserInfo();
                         const user = await Auth.currentAuthenticatedUser();
-                        console.log(user, userInfo);
                         
                         // Set user identityId attribute
                         const attribute = 'custom:identityId';
@@ -257,8 +254,16 @@ const Content = () => {
 
                         <FormField
                             label='File Uploader'
-                            description="1.Click on “select files” button and choose the files you want to upload.
-                                         2. Click upload when you are ready."
+                            description={(
+                                <>
+                                    <p>
+                                        1. Click on “select files” button and choose the files you want to upload.
+                                    </p>
+                                    <p>
+                                        2. Click upload when you are ready.
+                                    </p>
+                                </>
+                            )}
                         />
 
                         <SpaceBetween direction="horizontal" size="xs">
