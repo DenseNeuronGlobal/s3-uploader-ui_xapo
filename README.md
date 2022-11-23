@@ -76,6 +76,26 @@ This URL is the web application URl where you can open from the browser to acces
 Go to AWS Cognito and create your users. You can then test the application in Chrome.
 
 
+## Optional if using the Admin Portal:
+
+```sh
+amplify update auth
+```
+What do you want to do? Create or update Cognito user pool groups
+
+Create a group called "Admin"
+
+
+```sh
+amplify update auth
+```
+
+What do you want to do? Create or update Admin queries API
+? Do you want to restrict access to the admin queries API to a specific Group: Yes
+? Select the group to restrict access with: Admin
+
+
+
 ## Prerequisites
 
 To build this solution you must have:
