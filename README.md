@@ -19,7 +19,7 @@ cd s3-uploader-ui_xapo
 
 First install AWS Amplify CLI
 ```sh
-npm install -g @aws-amplify/cli`
+npm install -g @aws-amplify/cli
 ```
 
 Inside the project folder, initialize Amplify:
